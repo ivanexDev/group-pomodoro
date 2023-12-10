@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { setSupabaseTimer, supabase } from "./supabase/config";
 import Timer from "./components/Timer";
+import Modal from "./components/Modal";
+import SettingsForm from "./components/SettingsForm";
 
 type Timer = {
   time: string;
@@ -12,6 +14,7 @@ function App() {
     state: false,
     time: "00:00",
   });
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {}, [timer]);
 
@@ -38,9 +41,20 @@ function App() {
   };
 
   return (
-    <main className="grid place-content-center h-screen bg-pattern bg-tremor-background-muted dark:bg-dark-tremor-background-muted">
-      <Timer handleTimer={handleTimer} time={timer?.time} />
-    </main>
+    <>
+      <main className="grid place-content-center h-screen bg-pattern bg-tremor-background-muted dark:bg-dark-tremor-background-muted">
+        <Timer
+          handleTimer={handleTimer}
+          time={timer?.time}
+          handleShowModal={() => setShowModal(true)}
+        />
+
+          <Modal handleClose={() => setShowModal(false)} showModal={showModal}>
+            <SettingsForm />
+          </Modal>
+
+      </main>
+    </>
   );
 }
 
