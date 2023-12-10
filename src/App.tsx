@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {setSupabaseTimer, supabase} from "./supabase/config"
 import Timer from "./components/Timer"
 
@@ -8,12 +8,9 @@ type Timer = {
 }
 
 function App() {
-  const [timer, setTimer] = useState<Timer | null>({state:false , time: "00:00:00"})
 
+  const [timer, setTimer] = useState<Timer>({state:false , time: "00:00:00"})
 
-  useEffect(()=>{
-
-  },[timer])
 
   supabase.channel('custom-insert-channel')
   .on(
@@ -46,6 +43,7 @@ function App() {
     
     <main className="grid place-content-center h-screen">
       <Timer handleTimer={handleTimer} time={timer?.time}/>
+      {/* <Home/> */}
     </main>
   )
 }
