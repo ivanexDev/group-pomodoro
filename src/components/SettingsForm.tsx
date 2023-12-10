@@ -59,7 +59,7 @@ const SettingsForm = () => {
             </Select>
           </Flex>
           <Flex justifyContent="end">
-          <Button icon={CheckIcon} color="emerald">Done</Button>
+          <Button className="transition-colors duration-300" icon={CheckIcon} color="emerald">Done</Button>
           </Flex>
         </Flex>
       </form>

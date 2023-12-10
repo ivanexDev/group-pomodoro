@@ -23,35 +23,35 @@ interface TimerProps {
   handleShowModal: () => void;
 }
 
+const Timer: React.FC<TimerProps> = ({ handleShowModal }) => {
+  const {
+    formatTime,
+    resetTimer,
+    startTimer,
+    porcentajeTranscurrido,
+    timeRemaining,
+  } = usePomodoro(5, 60);
+  const [id, setId] = useState<number>(0);
 
-
-const Timer: React.FC<TimerProps> = ({
-  handleShowModal,
-}) => {
-  const {formatTime,resetTimer,startTimer,porcentajeTranscurrido, timeRemaining } = usePomodoro(5,60)
-  const [id , setId ] =  useState<number>(0)
-
-
-useEffect(()=>{
-  supabase.channel('custom-all-channel')
-  .on(
-    'postgres_changes',
-    { event: '*', schema: 'public', table: 'pomodoro-timer' },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (payload:any) => {
-      console.log('Change received!', payload)
-      if(!payload.new.state){
-        console.log("pase por aca")
-        return resetTimer()
-      }
-      setId(payload.new.id)
-      startTimer()
-    }
-  )
-  .subscribe()
-
-},[])
-
+  useEffect(() => {
+    supabase
+      .channel("custom-all-channel")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "pomodoro-timer" },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (payload: any) => {
+          console.log("Change received!", payload);
+          if (!payload.new.state) {
+            console.log("pase por aca");
+            return resetTimer();
+          }
+          setId(payload.new.id);
+          startTimer();
+        }
+      )
+      .subscribe();
+  }, []);
 
   const handleTimer = () => {
     const state = true;
@@ -59,10 +59,9 @@ useEffect(()=>{
     setSupabaseTimer(state, time);
   };
 
-  const handleStopTimer = ()=>{
+  const handleStopTimer = () => {
     stopPomodoro(id);
-  }
-
+  };
 
   return (
     <>
@@ -90,7 +89,11 @@ useEffect(()=>{
             <Badge icon={ClockIcon} />
             <Badge icon={ClockIcon} />
           </Flex>
-          <ProgressCircle value={porcentajeTranscurrido} size="xl" color="indigo">
+          <ProgressCircle
+            value={porcentajeTranscurrido}
+            size="xl"
+            color="indigo"
+          >
             <span className="h-[120px] w-[120px] rounded-full bg-indigo-100 flex items-center justify-center text-3xl text-indigo-500 font-medium">
               {formatTime(timeRemaining)}
             </span>
