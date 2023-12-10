@@ -1,33 +1,50 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect, useState } from 'react'
+import {setSupabaseTimer, supabase} from "./supabase/config"
 import './App.css'
 
+type Timer = {
+  time: string,
+  state: boolean
+}
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [timer, setTimer] = useState<Timer | null>({state:false , time: "00"})
+
+
+  useEffect(()=>{
+
+  },[timer])
+
+  supabase.channel('custom-insert-channel')
+  .on(
+    'postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'pomodoro-timer' },
+    (payload) => {
+      console.log('Change received!', payload)
+    }
+  )
+  .subscribe()
+
+
+
+
+  const handleTimer = ()=>{
+    const state = true;
+    const time = "00:00:00"
+    setSupabaseTimer(state, time)
+
+
+    
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+    <h1>Pomodoro</h1>
+    <p>{timer?.state.toString()}</p>
+    <p>{timer?.time}</p>
+    <button onClick={handleTimer}>Empecemos</button>
+
     </>
   )
 }
