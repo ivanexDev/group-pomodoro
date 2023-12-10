@@ -1,4 +1,10 @@
-# React + TypeScript + Vite
+# Group - Pomodoro
+
+![StreetDevs Home Image](./mockup.png)
+
+
+## React + TypeScript + Vite
+
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
