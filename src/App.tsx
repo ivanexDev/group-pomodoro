@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import {setSupabaseTimer, supabase} from "./supabase/config"
-import './App.css'
 import Timer from "./components/Timer"
 
 type Timer = {
@@ -9,7 +8,7 @@ type Timer = {
 }
 
 function App() {
-  const [timer, setTimer] = useState<Timer | null>({state:false , time: "00"})
+  const [timer, setTimer] = useState<Timer | null>({state:false , time: "00:00:00"})
 
 
   useEffect(()=>{
@@ -21,7 +20,12 @@ function App() {
     'postgres_changes',
     { event: 'INSERT', schema: 'public', table: 'pomodoro-timer' },
     (payload) => {
-      console.log('Change received!', payload)
+      console.log('Change received!', payload.new)
+      const newTimer = {
+        state: payload.new.state,
+        time: payload.new.time
+      }
+      setTimer(newTimer)
     }
   )
   .subscribe()
@@ -31,7 +35,7 @@ function App() {
 
   const handleTimer = ()=>{
     const state = true;
-    const time = "00:00:00"
+    const time = "00:25:00"
     setSupabaseTimer(state, time)
 
 
@@ -41,13 +45,7 @@ function App() {
   return (
     
     <main className="grid place-content-center h-screen">
-
-    <h1>Pomodoro</h1>
-    <p>{timer?.state.toString()}</p>
-    <p>{timer?.time}</p>
-    <button onClick={handleTimer}>Empecemos</button>
-
-      <Timer/>
+      <Timer handleTimer={handleTimer} time={timer?.time}/>
     </main>
   )
 }
