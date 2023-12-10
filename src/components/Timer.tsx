@@ -19,8 +19,13 @@ import usePomodoro from "../hook/usePomodoro";
 import { setSupabaseTimer, stopPomodoro, supabase } from "../supabase/config";
 import { useEffect, useState } from "react";
 
+interface TimerProps {
+  handleShowModal: () => void;
+}
 
-const Timer= () => {
+const Timer: React.FC<TimerProps> = ({
+  handleShowModal,
+}) => {
   const {formatTime,pauseTimer,resetTimer,startTimer,porcentajeTranscurrido, timeRemaining } = usePomodoro(5,60)
   const [id , setId ] =  useState<number>(0)
 
@@ -57,44 +62,65 @@ useEffect(()=>{
 
 
   return (
-    <Card className="w-[400px]" decoration="top" decorationColor="indigo">
-      <Flex flexDirection="col" className="gap-5">
-        <Flex>
-          <Title className="text-center text-2xl">Pomodoro - Group</Title>
-          <Button className="" icon={PencilIcon} color="indigo">
-            Edit
-          </Button>
+    <>
+      <Card className="w-[400px]" decoration="top" decorationColor="indigo">
+        <Flex flexDirection="col" className="gap-5">
+          <Flex>
+            <Title className="text-center text-2xl">Pomodoro - Group</Title>
+            <Button
+              className="transition-colors duration-300"
+              onClick={handleShowModal}
+              icon={PencilIcon}
+              color="indigo"
+            >
+              Edit
+            </Button>
+          </Flex>
+          <Divider />
+          <Flex className="gap-2" justifyContent="center">
+            <Badge
+              className="flex justify-center items-center"
+              icon={CheckIcon}
+              color="emerald"
+            />
+            <Badge icon={ClockIcon} />
+            <Badge icon={ClockIcon} />
+            <Badge icon={ClockIcon} />
+          </Flex>
+          <ProgressCircle value={porcentajeTranscurrido} size="xl" color="indigo">
+            <span className="h-[120px] w-[120px] rounded-full bg-indigo-100 flex items-center justify-center text-3xl text-indigo-500 font-medium">
+              {formatTime(timeRemaining)}
+            </span>
+          </ProgressCircle>
+          <Divider />
+          <Flex className="gap-2" justifyContent="center">
+            <Button
+              onClick={handleStopTimer}
+              className="transition-colors duration-300"
+              color="red"
+              icon={RefreshIcon}
+            >
+              Reset
+            </Button>
+            <Button
+              className="transition-colors duration-300"
+              color="indigo"
+              icon={PauseIcon}
+            >
+              Pause
+            </Button>
+            <Button
+              className="transition-colors duration-300"
+              onClick={handleTimer}
+              color="indigo"
+              icon={PlayIcon}
+            >
+              Start
+            </Button>
+          </Flex>
         </Flex>
-        <Divider />
-        <Flex className="gap-2" justifyContent="center">
-          <Badge
-            className="flex justify-center items-center"
-            icon={CheckIcon}
-            color="emerald"
-          />
-          <Badge icon={ClockIcon} />
-          <Badge icon={ClockIcon} />
-          <Badge icon={ClockIcon} />
-        </Flex>
-        <ProgressCircle value={porcentajeTranscurrido} size="xl" color="indigo">
-          <span className="h-[120px] w-[120px] rounded-full bg-indigo-100 flex items-center justify-center text-3xl text-indigo-500 font-medium">
-            {formatTime(timeRemaining)}
-          </span>
-        </ProgressCircle>
-        <Divider />
-        <Flex className="gap-2" justifyContent="center">
-          <Button onClick={handleStopTimer} icon={RefreshIcon} color="red">
-            Reset
-          </Button>
-          <Button onClick={pauseTimer} color="indigo" icon={PauseIcon}>
-            Pause
-          </Button>
-          <Button onClick={handleTimer} color="indigo" icon={PlayIcon}>
-            Start
-          </Button>
-        </Flex>
-      </Flex>
-    </Card>
+      </Card>
+    </>
   );
 };
 
