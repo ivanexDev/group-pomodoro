@@ -17,14 +17,10 @@ import {
 } from "@tremor/react";
 
 interface TimerProps {
-  handleTimer: () => void;
-  time: string | undefined;
   handleShowModal: () => void;
 }
 
 const Timer: React.FC<TimerProps> = ({
-  handleTimer,
-  time,
   handleShowModal,
 }) => {
   return (
@@ -55,7 +51,7 @@ const Timer: React.FC<TimerProps> = ({
           </Flex>
           <ProgressCircle value={10} size="xl" color="indigo">
             <span className="h-[120px] w-[120px] rounded-full bg-indigo-100 flex items-center justify-center text-3xl text-indigo-500 font-medium">
-              {time}
+              {0}
             </span>
           </ProgressCircle>
           <Divider />
@@ -76,7 +72,7 @@ const Timer: React.FC<TimerProps> = ({
             </Button>
             <Button
               className="transition-colors duration-300"
-              onClick={handleTimer}
+              // onClick={handleTimer}
               color="indigo"
               icon={PlayIcon}
             >
