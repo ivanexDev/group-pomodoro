@@ -23,10 +23,12 @@ interface TimerProps {
   handleShowModal: () => void;
 }
 
+
+
 const Timer: React.FC<TimerProps> = ({
   handleShowModal,
 }) => {
-  const {formatTime,pauseTimer,resetTimer,startTimer,porcentajeTranscurrido, timeRemaining } = usePomodoro(5,60)
+  const {formatTime,resetTimer,startTimer,porcentajeTranscurrido, timeRemaining } = usePomodoro(5,60)
   const [id , setId ] =  useState<number>(0)
 
 
@@ -35,7 +37,8 @@ useEffect(()=>{
   .on(
     'postgres_changes',
     { event: '*', schema: 'public', table: 'pomodoro-timer' },
-    (payload) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (payload:any) => {
       console.log('Change received!', payload)
       if(!payload.new.state){
         console.log("pase por aca")
