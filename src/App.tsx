@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import {setSupabaseTimer, supabase} from "./supabase/config"
 import './App.css'
+import Timer from "./components/Timer"
 
 type Timer = {
   time: string,
@@ -38,14 +39,16 @@ function App() {
   }
 
   return (
-    <>
+    
+    <main className="grid place-content-center h-screen">
 
     <h1>Pomodoro</h1>
     <p>{timer?.state.toString()}</p>
     <p>{timer?.time}</p>
     <button onClick={handleTimer}>Empecemos</button>
 
-    </>
+      <Timer/>
+    </main>
   )
 }
 
