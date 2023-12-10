@@ -1,4 +1,11 @@
-import { PlayIcon, RefreshIcon } from "@heroicons/react/outline";
+import {
+  CheckIcon,
+  ClockIcon,
+  PauseIcon,
+  PencilIcon,
+  PlayIcon,
+  RefreshIcon,
+} from "@heroicons/react/outline";
 import {
   Card,
   ProgressCircle,
@@ -6,26 +13,49 @@ import {
   Flex,
   Title,
   Divider,
+  Badge,
 } from "@tremor/react";
 
-interface TimerProps{
-  handleTimer: () => void,
-  time: string | undefined
+interface TimerProps {
+  handleTimer: () => void;
+  time: string | undefined;
 }
 
-const Timer: React.FC<TimerProps> = ({handleTimer, time}) => {
+const Timer: React.FC<TimerProps> = ({ handleTimer, time }) => {
   return (
-    <Card className="w-[400px]">
+    <Card className="w-[400px]" decoration="top" decorationColor="indigo">
       <Flex flexDirection="col" className="gap-5">
-        <Title className="text-center text-2xl">Pomodoro - Group</Title>
+        <Flex>
+          <Title className="text-center text-2xl">Pomodoro - Group</Title>
+          <Button className="" icon={PencilIcon} color="indigo">
+            Edit
+          </Button>
+        </Flex>
         <Divider />
-        <ProgressCircle value={10} size="xl">
-          <span className="text-3xl text-gray-700 font-medium">{time}</span>
+        <Flex className="gap-2" justifyContent="center">
+          <Badge
+            className="flex justify-center items-center"
+            icon={CheckIcon}
+            color="emerald"
+          />
+          <Badge icon={ClockIcon} />
+          <Badge icon={ClockIcon} />
+          <Badge icon={ClockIcon} />
+        </Flex>
+        <ProgressCircle value={10} size="xl" color="indigo">
+          <span className="h-[120px] w-[120px] rounded-full bg-indigo-100 flex items-center justify-center text-3xl text-indigo-500 font-medium">
+            {time}
+          </span>
         </ProgressCircle>
         <Divider />
         <Flex className="gap-2" justifyContent="center">
-          <Button icon={RefreshIcon}>Reset</Button>
-          <Button onClick={handleTimer} color="emerald" icon={PlayIcon}>
+          <Button icon={RefreshIcon} color="red">
+            Reset
+          </Button>
+          <Button color="indigo" icon={PauseIcon}>
+            Pause
+          </Button>
+          <Button onClick={handleTimer} color="indigo" icon={PlayIcon}>
             Start
           </Button>
         </Flex>
